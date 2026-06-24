@@ -9,10 +9,54 @@
     <div class="container">
         <h1>Number Guessing Game</h1>
         <p>Guess the number between 1 and 100</p>
-        <input type="number" placeholder="Enter your guess">
-        <button>Submit Guess</button>
-        <p class="message">Message will appear here...</p>
-        <button>Restart Game</button>
+        <input id="guessInput" type="number" min="1" max="100" placeholder="Enter your guess">
+        <button id="submitBtn" type="button">Submit Guess</button>
+        <p id="message" class="message">Message will appear here...</p>
+        <button id="restartBtn" type="button">Restart Game</button>
     </div>
+
+    <script>
+        let secretNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        const guessInput = document.getElementById('guessInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const message = document.getElementById('message');
+
+        function showMessage(text) {
+            message.textContent = text;
+        }
+
+        function startNewGame() {
+            secretNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            guessInput.value = '';
+            showMessage('New game started! Try again.');
+        }
+
+        submitBtn.addEventListener('click', function () {
+            const guess = Number(guessInput.value);
+
+            if (!Number.isInteger(guess)) {
+                showMessage('Please enter a valid number.');
+                return;
+            }
+
+            attempts += 1;
+
+            if (guess < 1 || guess > 100) {
+                showMessage('Please enter a number between 1 and 100.');
+            } else if (guess < secretNumber) {
+                showMessage('Too low! Try again.');
+            } else if (guess > secretNumber) {
+                showMessage('Too high! Try again.');
+            } else {
+                showMessage(`Correct! You guessed it in ${attempts} attempts.`);
+            }
+        });
+
+        restartBtn.addEventListener('click', startNewGame);
+    </script>
 </body>
 </html>
